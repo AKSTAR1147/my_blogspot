@@ -41,7 +41,7 @@ public class BlogController {
 
         likeRepository.save(like);
 
-        return "redirect:/post/{id}";  // refresh homepage to show updated like count
+        return "redirect:/post/{id}";  // refresh current page to show updated like count
     }
 
 
