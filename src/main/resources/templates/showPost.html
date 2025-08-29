@@ -16,27 +16,15 @@
           background: #fff;
           position: sticky;
           top: 0;
-          z-index: 100;   /* 👈 add this */
+          z-index: 100;
         }
         header h1 { font-size: 22px; font-weight: bold; margin: 0; }
 
         .blog-meta { font-size: 14px; color: #777; margin-bottom: 15px; }
 
-        .like-btn, .comment-btn {
-          border: none; background: none; cursor: pointer;
-          font-size: 16px; margin-right: 10px;
-        }
-        a{
-        text-decoration: none;
-        color: black;
-        }
-        .like-btn { color: #e63946; }
-        .comment-btn { color: #1d3557; }
-
-
         .post-actions {
           display: flex;
-          gap: 10px; /* space between buttons */
+          gap: 10px;
           align-items: center;
         }
 
@@ -50,59 +38,125 @@
           border-radius: 4px;
           text-align: center;
         }
-
         .btn-action:hover {
           background: #f5f5f5;
         }
 
+        /* ===== Comment drawer (slide from right) ===== */
+        .comment-toggle { display: none; }
+
+        .comment-drawer {
+          position: fixed; top: 0; right: -400px; width: 400px; height: 100%;
+          background: #fff; box-shadow: -2px 0 10px rgba(0,0,0,0.2);
+          padding: 20px; overflow-y: auto;
+          transition: right 0.3s ease; z-index: 2000;
+        }
+        .comment-toggle:checked ~ .comment-drawer {
+          right: 0;
+        }
+
+        .drawer-overlay {
+          position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+          display: none; z-index: 1500;
+        }
+        .comment-toggle:checked ~ .drawer-overlay {
+          display: block;
+        }
+
+        /* + Add Comment (pure CSS toggle) */
+        .toggle-comment { display: none; }
+        .add-comment-box { display: none; }
+        .toggle-comment:checked ~ .add-comment-box { display: block; }
     </style>
 </head>
 <body>
 <header>
     <div class="d-flex justify-content-between align-items-center mb-2">
         <h1>🌿 My Blog</h1>
-        <a th:href="@{/showBlogForm}"
-           class="btn btn-primary ">
-            Add Blog
-        </a>
+        <a th:href="@{/showBlogForm}" class="btn btn-primary">Add Blog</a>
     </div>
 </header>
 
 <div class="container mt-4">
     <div th:object="${post}">
 
+        <!-- ✅ Hidden checkbox controlling the drawer -->
+        <input type="checkbox" id="comments-toggle" class="comment-toggle">
+
         <!-- Card preview -->
         <div class="card mb-4 shadow-sm">
-                <div class="card-body">
-                    <h3 th:text="${post.title}"></h3>
-                    <div class="blog-meta">
-                        By: <strong th:text="${post.author}"></strong><br>
-                        Published: <span th:text="${post.createdAt}"></span>
-                    </div>
-                    <p
-                            th:text="${post.content}"
-                            style="white-space: pre-wrap; text-align: justify; font-family: var(--bs-font-monospace);"   >
-                    </p>
-
-
-                    <div class="post-actions">
-                        <!-- Like button -->
-                        <!--submits the form to save the likes and shows the updated like count-->
-                        <form th:action="@{/post/{id}/like(id=${post.id})}" method="post" style="display:inline;">
-                            <button type="submit" class="btn-action">
-                                <span th:text="${post.likes.size()} + ' Like'"></span>
-                            </button>
-                        </form>
-
-                        <!-- Comment count-->
-                        <div style="display:inline;">
-                            <button class="btn-action">
-                                <span th:text="${post.comments.size()} + ' comments'"></span>
-                            </button>
-                        </div>
-                    </div>
+            <div class="card-body">
+                <h3 th:text="${post.title}"></h3>
+                <div class="blog-meta">
+                    By: <strong th:text="${post.author}"></strong><br>
+                    Published: <span th:text="${post.createdAt}"></span>
                 </div>
+                <p th:text="${post.content}"
+                   style="white-space: pre-wrap; text-align: justify; font-family: var(--bs-font-monospace);">
+                </p>
+
+                <div class="post-actions">
+                    <!-- Like button -->
+                    <!--submits the form to save the likes and shows the updated like count-->
+                    <form th:action="@{/post/{id}/like(id=${post.id})}" method="post" style="display:inline;">
+                        <button type="submit" class="btn-action">
+                            <span th:text="${post.likes.size()} + ' Like'">Like</span>
+                        </button>
+                    </form>
+
+                    <!-- Comment button opens drawer -->
+                    <label for="comments-toggle" class="btn-action">
+                        <span th:text="${post.comments.size()} + ' comments'"></span>
+                    </label>
+                </div>
+            </div>
         </div>
+
+        <!-- ✅ These MUST be siblings of the checkbox above -->
+        <!-- Drawer panel -->
+        <div class="comment-drawer">
+            <h4>Comments</h4>
+
+            <!-- If there are no comments -->
+            <div th:if="${post.comments.size() == 0}">
+                <p>No comments yet</p>
+            </div>
+
+            <!-- If there are comments -->
+            <div th:each="comment : ${post.comments}" class="border-bottom mb-2 pb-2">
+                <p th:text="${comment.content}"></p>
+                <small th:text="'By ' + ${comment.author}"></small>
+            </div>
+
+            <hr>
+
+            <!-- Add Comment toggle + form -->
+            <div class="comment-section">
+                <input type="checkbox" id="add-comment-toggle" class="toggle-comment">
+                <label for="add-comment-toggle" class="btn btn-primary w-100">+ Add Comment</label>
+
+                <div class="add-comment-box mt-3">
+                    <!-- If not logged in -->
+                    <div th:if="${#authentication == null}">
+                        <a href="/oauth2/authorization/google" class="btn btn-danger w-100">Sign in with Google</a>
+                    </div>
+
+                    <!-- If logged in -->
+                    <form th:if="${#authentication != null}"
+                          th:action="@{/post/{id}/comment(id=${post.id})}" method="post">
+                        <textarea class="form-control mb-2" name="content" placeholder="Write a comment..." required></textarea>
+                        <button type="submit" class="btn btn-success w-100">Post Comment</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Close drawer -->
+            <label for="comments-toggle" class="btn btn-secondary mt-3 w-100">Close</label>
+        </div>
+
+        <!-- Overlay (click to close) -->
+        <label for="comments-toggle" class="drawer-overlay"></label>
+
     </div>
 </div>
 </body>

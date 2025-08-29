@@ -25,7 +25,7 @@ public class BlogController {
 
     @GetMapping("/")
     public String index(Model model) {
-        List<BlogPost> posts = blogRepository.findAll();
+        List<BlogPost> posts = blogRepository.findAllByOrderByCreatedAtDesc();
         model.addAttribute("posts", posts);
         return "index";
     }
