@@ -1,4 +1,4 @@
-package AK_BOLGSPOT;
+package AK_BLOGSPOT;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
