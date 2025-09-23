@@ -5,6 +5,7 @@ import AK_BOLGSPOT.model.Comment;
 import AK_BOLGSPOT.model.Like;
 import AK_BOLGSPOT.repository.BlogRepository;
 import AK_BOLGSPOT.repository.LikeRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,16 +42,35 @@ public class BlogController {
 
         likeRepository.save(like);
 
-        return "redirect:/post/{id}";  // refresh homepage to show updated like count
+        return "redirect:/post/" + id; // refresh homepage to show updated like count
     }
 
 
+//    @GetMapping("/showBlogForm")
+//    public String blogForm(Model model){
+//
+//        //create modal attribute to bind form data
+//        BlogPost post = new BlogPost();
+//
+//        //add attribute to model
+//        model.addAttribute("newPost",post);
+//
+//        return "addPost";
+//    }
     @GetMapping("/showBlogForm")
-    public String blogForm(Model model){
+    public String showGetStarted(){
+        return "getStarted";
+    }
 
+    @GetMapping("/login")
+    public String shoLoginForm(){
+        return "login";
+    }
+
+    @GetMapping("/addPost")
+    public String afterLoginAddPost(Model model){
         //create modal attribute to bind form data
         BlogPost post = new BlogPost();
-
         //add attribute to model
         model.addAttribute("newPost",post);
 
@@ -73,7 +93,7 @@ public class BlogController {
     }
 
     @PostMapping("/save")
-    public String saveEmployee(@ModelAttribute("newPost") BlogPost blogPost){
+    public String savePost(@Valid @ModelAttribute("newPost") BlogPost blogPost){
 
         //save the employee
         blogPost.setCreatedAt(LocalDate.now() );

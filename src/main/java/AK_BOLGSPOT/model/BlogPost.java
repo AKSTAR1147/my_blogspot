@@ -2,6 +2,7 @@ package AK_BOLGSPOT.model;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -15,16 +16,21 @@ public class BlogPost {
     @Column(name="id")
     private Long id;
 
+    @Size(min = 2, message = "title should be longer than 2 characters")
     @Column(name="title")
     private String title;
 
+    @NotBlank(message = "you cannot leave this blank")
     @Column(name="content")
     private String content;
 
-
+    @NotEmpty
+    @NotNull(message = "author must have a name")
+    @Pattern(regexp="^[A-Za-z ]+$")
     @Column(name="author")
     private String author;
 
+    @Past
     @Column(name="created_at")
     private LocalDate createdAt;
 

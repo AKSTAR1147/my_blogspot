@@ -10,6 +10,7 @@
     <hr>
     <p class="h4 mb-4">New Blog</p>
 
+
     <form  action="#"
            th:action="@{/save}"
            th:object="${newPost}"
@@ -21,8 +22,18 @@
         <button type="submit" class="btn btn-info col-2">Save</button>
 
     </form>
+
+    <br>
+    <form th:action="@{/logout}" method="post">
+        <button type="submit" class="btn btn-danger">Logout</button>
+    </form>
+    <br>
+    <a th:href="@{/}">Go back to home</a>
+
     <hr>
-<!--    <a th:href="@{/employees/list}" class="text-decoration-none">Back to Employees List</a>-->
+
+
+
 </div>
 </body>
 </html>
