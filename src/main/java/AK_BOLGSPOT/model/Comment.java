@@ -1,7 +1,5 @@
 package AK_BOLGSPOT.model;
 
-
-
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -32,10 +30,10 @@ public class Comment {
     public Comment() {
     }
 
-    public Comment(String content, String author, LocalDateTime createdAt, BlogPost blogPost) {
+    public Comment(String content, String author, BlogPost blogPost) {
         this.content = content;
         this.author = author;
-        this.createdAt = createdAt;
+        this.createdAt = LocalDateTime.now();
         this.blogPost = blogPost;
     }
 
@@ -65,11 +63,6 @@ public class Comment {
     public void setAuthor(String author) {
         this.author = author;
     }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }

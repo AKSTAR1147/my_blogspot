@@ -19,7 +19,7 @@ public class Like {
     public Like() {
     }
 
-    public Like(String username, BlogPost blogPost) {
+    public Like(BlogPost blogPost) {
         this.blogPost = blogPost;
     }
 

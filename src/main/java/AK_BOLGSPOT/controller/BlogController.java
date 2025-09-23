@@ -4,9 +4,12 @@ import AK_BOLGSPOT.model.BlogPost;
 import AK_BOLGSPOT.model.Comment;
 import AK_BOLGSPOT.model.Like;
 import AK_BOLGSPOT.repository.BlogRepository;
+import AK_BOLGSPOT.repository.CommentRepository;
 import AK_BOLGSPOT.repository.LikeRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +23,9 @@ public class BlogController {
 
     @Autowired
     private BlogRepository blogRepository;
+
+    @Autowired
+    private CommentRepository commentRepository;
 
     @Autowired
     private LikeRepository likeRepository;
@@ -45,24 +51,31 @@ public class BlogController {
         return "redirect:/post/" + id; // refresh homepage to show updated like count
     }
 
+    @PostMapping("/post/{id}/comment")
+    public String commentPost(@PathVariable Long id,
+                              @RequestParam  String content,
+                              @AuthenticationPrincipal OidcUser principal){
 
-//    @GetMapping("/showBlogForm")
-//    public String blogForm(Model model){
-//
-//        //create modal attribute to bind form data
-//        BlogPost post = new BlogPost();
-//
-//        //add attribute to model
-//        model.addAttribute("newPost",post);
-//
-//        return "addPost";
-//    }
+
+        BlogPost post = blogRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Post not found"));
+
+        // 2. Get the author's name directly from the Google user's profile
+        String author = principal.getAttribute("name");
+
+        Comment comment = new Comment(content,author,post);
+        commentRepository.save(comment);
+
+
+        return "redirect:/post/"+ id;
+    }
+
     @GetMapping("/showBlogForm")
     public String showGetStarted(){
         return "getStarted";
     }
 
-    @GetMapping("/login")
+    @GetMapping("/loginDB")
     public String shoLoginForm(){
         return "login";
     }
@@ -103,20 +116,9 @@ public class BlogController {
         return "redirect:/";
     }
 
-//    @GetMapping("/post/{id}")
-//    public String post(@PathVariable Long id, Model model) {
-//        BlogPost post = blogRepository.findById(id);
-//        model.addAttribute("post", post);
-//        return "post";
-//    }
-//
-//    @PostMapping("/post/{id}/comment")
-//    public String addComment(@PathVariable Long id, @RequestParam String content) {
-//        Comment comment = new Comment();
-//        comment.setContent(content);
-//        comment.setAuthor("Anonymous"); // You can modify this to get the actual user
-//        blogRepository.addComment(id, comment);
-//        return "redirect:/post/" + id;
-//    }
+    @GetMapping("/access-denied")
+    public String showAccessDeniedPage() {
+        return "access-denied"; // This will look for access-denied.html
+    }
 }
 
