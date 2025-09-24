@@ -18,6 +18,7 @@
         <!-- Add a hidden form field to handel the update -->
         <input type="text" th:field="*{title}" class="form-control mb-4 w-25" placeholder="Blog Title"/>
         <textarea  th:field="*{content}" placeholder="Write your content..."  rows="6"  class="form-control mb-4 w-100"></textarea>
+        <input type="date" th:field="*{createdAt}" class="form-control mb-4 w-25">
         <input type="text" th:field="*{author}" class="form-control mb-4 w-25" placeholder="Your Name Sir"/>
         <button type="submit" class="btn btn-info col-2">Save</button>
 

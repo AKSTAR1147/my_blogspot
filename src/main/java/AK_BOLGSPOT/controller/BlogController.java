@@ -108,8 +108,8 @@ public class BlogController {
     @PostMapping("/save")
     public String savePost(@Valid @ModelAttribute("newPost") BlogPost blogPost){
 
-        //save the employee
-        blogPost.setCreatedAt(LocalDate.now() );
+        //save the post
+
         blogRepository.save(blogPost);
 
         //use a redirect to prevent duplicate submissions
