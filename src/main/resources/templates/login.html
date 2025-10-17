@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Login</title>
+
+    <!--    bootstrap link-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <!--    bootstrap Icons link-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+    <style>
+        body {
+            background: linear-gradient(135deg, white, #aaa);
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .login-card {
+            background: white;
+            border: 2px solid black ;
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            color: white;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        /* --- REPLACE THE OLD STYLES WITH THESE --- */
+
+        .form-control {
+            background-color: #f8f9fa; /* A very light grey background */
+            border: 1px solid #ced4da;  /* A standard grey border */
+            color: #212529;           /* Dark text color for input */
+        }
+
+        .form-control::placeholder {
+            color: #6c757d; /* A muted grey for placeholder text */
+        }
+
+        .form-control:focus {
+            background-color: #fff; /* White background on focus */
+            color: #212529;
+            border-color: #86b7fe; /* Blue border on focus (Bootstrap default) */
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25); /* Blue shadow on focus */
+        }
+
+        .btn-login {
+            background-color: #161955;
+            color: white;
+            font-weight: 500;
+        }
+
+        .btn-login:hover {
+            background-color: #1d1f6e;
+        }
+
+        .form-label {
+            margin-top: 10px;
+            color: black;
+        }
+        /* home icon css ------------------------------------------------------------------------------------------------------------------ */
+        .home-icon {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            color: #777;
+            text-decoration: none;
+        }
+
+        .home-icon:hover {
+            color: black;
+        }
+        /* --------------------------------------------------------------------------------------------------------------------------------- */
+    </style>
+</head>
+<body>
+
+<div class="login-card">
+    <!-- Home icon (top-right corner) -->
+    <a th:href="@{/}" class="home-icon" title="Go to Home">
+        <i class="bi bi-house-door-fill fs-4"></i>
+    </a>
+
+    <h3 class="fw-bold" style="color: black;">Sign In</h3>
+    <p class="mb-4" style="color: #777;">Please login to access the dashboard.</p>
+
+    <!-- Check for logout parameter -->
+    <div th:if="${param.logout}">
+        <i class="text-success">User Logged Out</i>
+    </div>
+
+    <form th:action="@{/authenticateTheUser}" method="POST">
+        <label class="form-label">Username</label>
+        <input type="text" class="form-control" name="username" placeholder="USERNAME" required>
+
+        <label class="form-label">Password</label>
+        <input type="password" class="form-control" name="password" placeholder="PASSWORD" required>
+
+        <button type="submit" class="btn btn-login w-100 mt-4 py-2">Secure Sign-in</button>
+
+        <!-- Check for error parameter -->
+        <div th:if="${param.error}">
+            <i class="text-danger">Wrong Login Credentials</i>
+        </div>
+    </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+
+</body>
+</html>

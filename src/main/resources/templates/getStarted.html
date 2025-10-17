@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Get Started</title>
+
+    <!--    bootstrap link-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, white, #aaa);
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        /* welcome card css---------------------------------------------------------------------------------------------------------- */
+
+        .welcome-card {
+            position: relative; /* <-- Add this line */
+            background: white;
+            border-radius: 20px;
+            border: #333 2px solid;
+            padding: 40px 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .welcome-card h1 {
+            font-weight: 700;
+            color:black;
+        }
+
+        .welcome-card p {
+            color: #666;
+        }
+        /* -------------------------------------------------------------------------------------------------------------------------------- */
+        /* features list css -------------------------------------------------------------------------------------------------------------- */
+        .features-list {
+            text-align: left;
+            padding-left: 0;
+            list-style: none;
+        }
+
+        .features-list li::before {
+            content: '✓';
+            color: green;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .features-list li {
+            margin-bottom: 10px;
+            color:black;
+        }
+
+        .features-title {
+            color: black;
+            font-weight: 700;
+        }
+        /* ------------------------------------------------------------------------------------------------------------------------------- */
+        /* home icon css ------------------------------------------------------------------------------------------------------------------ */
+        .home-icon {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            color: #777;
+            text-decoration: none;
+        }
+
+        .home-icon:hover {
+            color: black;
+        }
+        /* --------------------------------------------------------------------------------------------------------------------------------- */
+    </style>
+</head>
+<body>
+
+<div class="welcome-card">
+    <a th:href="@{/}" class="home-icon" title="Go to Home">
+        <i class="bi bi-house-door-fill fs-4"></i>
+    </a>
+    <h1>Welcome</h1>
+    <p>Login to add or Manage Blogs </p>
+
+    <div class="my-4">
+        <a th:href="@{/loginDB}" class="btn btn-primary">Login</a>
+    </div>
+
+    <hr />
+
+    <h5 class="features-title">Features</h5>
+    <ul class="features-list mt-3" >
+        <li>Add Blogs</li>
+        <li>Delete Blogs</li>
+        <li>Update Blogs</li>
+    </ul>
+</div>
+
+</body>
+</html>
+
