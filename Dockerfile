@@ -1,5 +1,5 @@
 # Use a specific Java version for the build environment
-FROM openjdk:24-jdk-slim as build
+FROM openjdk:21-jdk-slim as build
 
 # Set the working directory
 WORKDIR /workspace/app
@@ -18,7 +18,7 @@ COPY src src
 RUN ./mvnw package -DskipTests
 
 # Use a smaller image for the final runtime environment
-FROM openjdk:24-jre-slim
+FROM openjdk:21-jre-slim
 VOLUME /tmp
 
 # Copy the packaged JAR file from the build stage
