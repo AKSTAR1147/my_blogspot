@@ -1,5 +1,5 @@
-# Use a specific Java version for the build environment
-FROM openjdk:21-jdk-slim as build
+# Use the Java 21 JDK image for the build environment
+FROM openjdk:21-jdk-slim AS build
 
 # Set the working directory
 WORKDIR /workspace/app
@@ -14,17 +14,17 @@ RUN ./mvnw dependency:go-offline
 # Copy the source code
 COPY src src
 
-# Package the application
+# Package the application, skipping tests
 RUN ./mvnw package -DskipTests
 
-# Use a smaller image for the final runtime environment
-FROM openjdk:21-jre-slim
+# Use the more compatible 'slim' image for the final runtime environment
+FROM openjdk:21-slim
 VOLUME /tmp
 
 # Copy the packaged JAR file from the build stage
 COPY --from=build /workspace/app/target/*.jar app.jar
 
-# Expose the port your Spring app runs on (usually 8080)
+# Expose the port your Spring app runs on
 EXPOSE 8080
 
 # Run the JAR file when the container starts
