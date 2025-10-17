@@ -57,12 +57,15 @@
         .comment-toggle:checked ~ .drawer-overlay {
             display: block;
         }
+
     </style>
 </head>
 <body>
 <header>
     <div class="d-flex justify-content-between align-items-center mb-2">
-        <h1>🌿 My Blog</h1>
+        <a th:href="@{/}">
+            <img th:src="@{/images/starbloglogo.png}" alt="My Blog Logo" style="height: 60px;">
+        </a>
     </div>
 </header>
 
