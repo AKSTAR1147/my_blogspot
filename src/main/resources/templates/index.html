@@ -79,6 +79,17 @@
             font-weight: normal;                    /* Cursive fonts look better without bolding */
             margin: 0;                              /* Removes extra spacing */
         }
+        .blog-card {
+            border: none; /* Removes the default grey border for a cleaner look */
+            border-radius: 12px; /* Gives the card softer, more modern rounded corners */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05); /* A subtle starting shadow */
+            transition: all 0.3s ease-in-out; /* Makes the hover effect smooth */
+        }
+
+        .blog-card:hover {
+            transform: translateY(-8px); /* Lifts the card up slightly */
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1); /* Creates a larger, softer shadow */
+        }
 
     </style>
 </head>
@@ -107,7 +118,7 @@
     <div th:each="post : ${posts}">
 
         <!-- Card preview -->
-        <div class="card mb-4 shadow-sm">
+        <div class="card mb-4 blog-card">
             <!--            //clicking on the current card takes you to the new page showing complete content of the blog-->
             <a th:href="@{/post/{id}(id=${post.id})}">
                 <div class="card-body">
@@ -150,3 +161,4 @@
 </div>
 </body>
 </html>
+
