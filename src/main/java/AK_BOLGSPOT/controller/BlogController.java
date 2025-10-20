@@ -6,6 +6,7 @@ import AK_BOLGSPOT.model.Like;
 import AK_BOLGSPOT.repository.BlogRepository;
 import AK_BOLGSPOT.repository.CommentRepository;
 import AK_BOLGSPOT.repository.LikeRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -90,17 +91,18 @@ public class BlogController {
         return "addPost";
     }
 
-    @GetMapping("/post/{id}")
-    public String showPost(@PathVariable Long id, Model model) {
 
+    @GetMapping("/post/{id}")
+    public String showPost(@PathVariable Long id, Model model, HttpServletRequest request) { // <-- Add HttpServletRequest here
         //searching for the post in the DB and saving in the new object
         BlogPost post = blogRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Post not found"));
-
         //adding the found post to the model for serving to the html page
-        model.addAttribute("post",post);
+        model.addAttribute("post", post);
         model.addAttribute("newComment", new Comment());
 
+        // THIS IS THE NEW LINE: Add the current URL to the model
+        model.addAttribute("currentUrl", request.getRequestURI());
         //takes you to the page showing the only post you clicked on
         return "showPost";
     }
