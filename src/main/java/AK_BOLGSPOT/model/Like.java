@@ -11,7 +11,7 @@ public class Like {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "blog_post_id")
+    @JoinColumn(name = "blogpost_id")
     private BlogPost blogPost;
 
     // Constructors, getters and setters
