@@ -163,7 +163,8 @@
             <div class="comment-section mt-3">
                 <div sec:authorize="!isAuthenticated()">
                     <p>Want to leave a comment?</p>
-                    <a th:href="@{/oauth2/authorization/google}" class="btn btn-danger w-100">
+                    <a th:href="@{/oauth2/authorization/google(redirect_uri=${currentUrl})}"
+                       class="btn btn-danger w-100">
                         <i class="bi bi-google"></i> Login with Google
                     </a>
                 </div>
