@@ -30,7 +30,7 @@ CREATE TABLE authorities
      CONSTRAINT unique_user_authority UNIQUE(username,authority));
 
 INSERT INTO users (username,password)
-    VALUES ("anurag","{bcrypt}$2a$10$wRtVUSClULEOEpKsVt1.OOaB.oIqarPnqqZS.whaojAUqLrQr0U7.");
+    VALUES ("anurag","{noop}anurag");
 
 insert into authorities (username, authority)
     VALUES ("anurag","ROLE_ADMIN");
