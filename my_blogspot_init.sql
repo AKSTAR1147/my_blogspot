@@ -3,7 +3,7 @@ CREATE TABLE blog_post
      title VARCHAR(50) NOT NULL,
      author VARCHAR(50) NOT NULL,
      created_at TIMESTAMP DEFAULT NOW(),
-     content TEXT NOT NULL);
+     content LONGTEXT NOT NULL);
 
 CREATE TABLE comments
     (id INT PRIMARY KEY AUTO_INCREMENT,
