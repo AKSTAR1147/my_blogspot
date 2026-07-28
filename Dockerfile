@@ -1,34 +1,37 @@
-# Use the Java 21 JDK image for the build environment
-FROM openjdk:21-jdk-slim AS build
+# ---------- Build Stage ----------
+FROM eclipse-temurin:21-jdk AS build
 
 # Set the working directory
 WORKDIR /workspace/app
 
-# Copy the Maven wrapper and project definition
+# Copy Maven wrapper and project files
 COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
 
-# Make the Maven wrapper executable (THIS IS THE FIX)
+# Make Maven wrapper executable
 RUN chmod +x mvnw
 
 # Download dependencies
 RUN ./mvnw dependency:go-offline
 
-# Copy the source code
+# Copy source code
 COPY src src
 
-# Package the application, skipping tests
-RUN ./mvnw package -DskipTests
+# Build the application
+RUN ./mvnw clean package -DskipTests
 
-# Use the more compatible 'slim' image for the final runtime environment
-FROM openjdk:21-slim
+# ---------- Runtime Stage ----------
+FROM eclipse-temurin:21-jre
+
+WORKDIR /
+
 VOLUME /tmp
 
-# Copy the packaged JAR file from the build stage
+# Copy the packaged JAR
 COPY --from=build /workspace/app/target/*.jar app.jar
 
-# Expose the port your Spring app runs on
+# Expose application port
 EXPOSE 8080
 
-# Run the JAR file when the container starts
-ENTRYPOINT ["java","-jar","/app.jar"]
+# Run the application
+ENTRYPOINT ["java", "-jar", "/app.jar"]
