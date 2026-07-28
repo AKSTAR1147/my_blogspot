@@ -30,7 +30,8 @@ public class BlogPost {
     @Column(name="author")
     private String author;
 
-    @Past
+
+    @PastOrPresent
     @Column(name="created_at")
     private LocalDate createdAt;
 
