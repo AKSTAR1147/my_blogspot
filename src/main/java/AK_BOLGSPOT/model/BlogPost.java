@@ -20,8 +20,9 @@ public class BlogPost {
     @Column(name="title")
     private String title;
 
-    @NotBlank(message = "you cannot leave this blank")
-    @Column(name="content")
+    @NotBlank(message = "You cannot leave this blank")
+    @Lob
+    @Column(name = "content", columnDefinition = "LONGTEXT")
     private String content;
 
     @NotEmpty
